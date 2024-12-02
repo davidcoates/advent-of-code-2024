@@ -1,5 +1,5 @@
 def read_input_as_columns() -> (list[int], list[int]):
-    with open("input.txt") as file:
+    with open("../input.txt") as file:
         lines = file.read().rstrip().split('\n')
     def convert_line(line):
         [x, y] = line.split()
@@ -21,5 +21,5 @@ def part2():
     print(total_similarity)
 
 if __name__ == '__main__':
-    #part1()
+    part1()
     part2()
