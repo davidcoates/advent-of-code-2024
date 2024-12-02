@@ -1,5 +1,5 @@
 def read_reports() -> list[list[int]]:
-    with open("../input.txt") as file:
+    with open("input.txt") as file:
         lines = file.read().rstrip().split('\n')
     def convert_line(line):
         return list(map(int, line.split()))

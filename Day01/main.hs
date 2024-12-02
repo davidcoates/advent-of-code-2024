@@ -2,7 +2,7 @@ import Data.List (sort)
 
 readInputAsColumns :: IO ([Int], [Int])
 readInputAsColumns = do
-  contents <- readFile "../input.txt"
+  contents <- readFile "input.txt"
   let parseLine :: String -> (Int, Int)
       parseLine = (\[a, b] -> (a, b)) . map read . words
   let parsedLines = map parseLine (lines contents) :: [(Int, Int)]

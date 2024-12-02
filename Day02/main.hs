@@ -2,7 +2,7 @@
 
 readReports :: IO [[Int]]
 readReports = do
-  contents <- readFile "../input.txt"
+  contents <- readFile "input.txt"
   return $ map (map read . words) (lines contents)
 
 isReportSafeInc :: [Int] -> Bool
