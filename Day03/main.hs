@@ -1,7 +1,10 @@
 {-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 
 -- A fun exercise to solve the problem without regex
 
+import Data.String (IsString(..))
 import Control.Applicative (Alternative(..))
 
 -- A simple non-backtracking parser with one character of lookahead
@@ -32,6 +35,15 @@ instance Alternative Parser where
     (Just x, ts) -> (Just x, ts)
     (Nothing, ts) -> p2 ts
 
+findAll :: Parser a -> String -> [a]
+findAll (Parser p) = \case
+  [] -> []
+  ts -> case p ts of
+    (Nothing, ts) -> case ts of
+      [] -> []
+      (t:ts) -> findAll (Parser p) ts
+    (Just x, ts) -> x : findAll (Parser p) ts
+
 match :: (Char -> Bool) -> Parser Char
 match p = Parser $ \ts -> case ts of
   [] -> (Nothing, [])
@@ -47,6 +59,9 @@ string = \case
   [c] -> (:[]) <$> char c
   (c:cs) -> (:) <$> char c <*> string cs
 
+instance (a ~ String) => IsString (Parser a) where
+  fromString = string
+  
 between :: Int -> Int -> Parser a -> Parser [a]
 between n m p | m >= n && n >= 0 = between' n m where
   between' 0 0 = pure []
@@ -58,16 +73,7 @@ int = read <$> (between 1 3 digit) where
   digit = match (`elem` ['0'..'9'])
 
 mul :: Parser (Int, Int)
-mul = (,) <$> (string "mul(" *> int) <*> (string "," *> int <* string ")")
-
-findAll :: Parser a -> String -> [a]
-findAll (Parser p) = \case
-  [] -> []
-  ts -> case p ts of
-    (Nothing, ts) -> case ts of
-      [] -> []
-      (t:ts) -> findAll (Parser p) ts
-    (Just x, ts) -> x : findAll (Parser p) ts
+mul = (,) <$> ("mul(" *> int) <*> ("," *> int <* ")")
 
 part1 :: IO ()
 part1 = do
@@ -80,7 +86,7 @@ data Statement = Mul (Int, Int) | Do | Dont
 part2 :: IO ()
 part2 = do
   ts <- readFile "input.txt"
-  let statement = (Mul <$> mul) <|> (string "do" *> ((string "()" *> pure Do) <|> (string "n't()" *> pure Dont))) 
+  let statement = (Mul <$> mul) <|> ("do" *> (("()" *> pure Do) <|> ("n't()" *> pure Dont))) 
   let answer = eval True (findAll statement ts)
   print answer
   where
