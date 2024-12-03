@@ -1,6 +1,6 @@
 {-# LANGUAGE LambdaCase #-}
 
--- A fun exercise to solve the prolem without regex
+-- A fun exercise to solve the problem without regex
 
 import Control.Applicative (Alternative(..))
 
