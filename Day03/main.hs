@@ -56,7 +56,7 @@ char c = match (== c)
 
 string :: String -> Parser String
 string = \case
-  [c] -> (:[]) <$> char c
+  [] -> pure []
   (c:cs) -> (:) <$> char c <*> string cs
 
 instance (a ~ String) => IsString (Parser a) where
