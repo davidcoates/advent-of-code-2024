@@ -1,12 +1,12 @@
 
 # quick and dirty
 
-def read_input() -> (list[(int, int)], list[list[int]]):
+def read_input() -> (set[(int, int)], list[list[int]]):
     with open("input.txt") as file:
         lines = [ line.rstrip('\n') for line in file.readlines() ]
         i = lines.index('')
         rules = lines[:i]
-        rules = [ tuple(map(int, rule.split('|'))) for rule in rules ]
+        rules = { tuple(map(int, rule.split('|'))) for rule in rules }
         pages_list = lines[i+1:]
         pages_list = [ list(map(int, pages.split(','))) for pages in pages_list ]
     return (rules, pages_list)
