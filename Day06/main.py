@@ -39,24 +39,24 @@ def read_input():
 
 def patrol(grid) -> tuple[set[Position], bool]:
     direction = Direction.UP
-    (i, j) = next((i, row.index('^')) for (i, row) in enumerate(grid) if '^' in row)
+    (x, y) = next((x, row.index('^')) for (x, row) in enumerate(grid) if '^' in row)
     r = len(grid)
     c = len(grid[0])
     positions = set()
     seen = set()
     while True:
-        if (i, j, direction) in seen:
+        if (x, y, direction) in seen:
             return (positions, True)
-        seen.add((i, j, direction))
-        if (i, j) not in positions:
-            positions.add((i, j))
-        (next_i, next_j) = direction.move(i, j)
-        if 0 <= next_i < r and 0 <= next_j < c:
-            if grid[next_i][next_j] == '#':
+        seen.add((x, y, direction))
+        if (x, y) not in positions:
+            positions.add((x, y))
+        (x_next, y_next) = direction.move(x, y)
+        if 0 <= x_next < r and 0 <= y_next < c:
+            if grid[x_next][y_next] == '#':
                 direction = direction.rotate()
                 continue
             else:
-                (i, j) = (next_i, next_j)
+                (x, y) = (x_next, y_next)
         else:
             return (positions, False)
 
@@ -70,16 +70,16 @@ def part2():
     r = len(grid)
     c = len(grid[0])
     answer = 0
-    for i in range(r):
-        for j in range(c):
-            if grid[i][j] != '.':
+    for x in range(r):
+        for y in range(c):
+            if grid[x][y] != '.':
                 continue
-            tmp = grid[i]
-            grid[i] = grid[i][:j] + '#' + grid[i][j+1:]
+            tmp = grid[x]
+            grid[x] = grid[x][:y] + '#' + grid[x][y+1:]
             (_, stuck) = patrol(grid)
             if stuck:
                 answer += 1
-            grid[i] = tmp
+            grid[x] = tmp
     print(answer)
 
 if __name__ == "__main__":
