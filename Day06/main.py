@@ -1,5 +1,5 @@
 from enum import Enum, auto
-from os import getresgid
+
 
 type Position = tuple[int, int]
 
