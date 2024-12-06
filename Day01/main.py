@@ -1,11 +1,11 @@
-def read_input_as_columns() -> (list[int], list[int]):
+def read_input_as_columns() -> tuple[list[int], list[int]]:
     with open("input.txt") as file:
         lines = file.read().rstrip().split('\n')
     def convert_line(line):
         [x, y] = line.split()
         return [int(x), int(y)]
-    lines = map(convert_line, lines)
-    return tuple(map(list, zip(*lines)))
+    (column0, column1) = tuple(zip(*map(convert_line, lines)))
+    return (list(column0), list(column1))
 
 def part1():
     (column0, column1) = read_input_as_columns()

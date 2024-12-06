@@ -1,12 +1,20 @@
 
 # quick and dirty
 
-def read_input() -> (set[(int, int)], list[list[int]]):
+type Rule = tuple[int, int]
+type Rules = set[Rule]
+
+type Pages = list[int]
+
+def read_input() -> tuple[Rules, list[Pages]]:
     with open("input.txt") as file:
         lines = [ line.rstrip('\n') for line in file.readlines() ]
         i = lines.index('')
         rules = lines[:i]
-        rules = { tuple(map(int, rule.split('|'))) for rule in rules }
+        def convert_rule(rule: str) -> Rule:
+            [x, y] = rule.split('|')
+            return (int(x), int(y))
+        rules = { convert_rule(rule) for rule in rules }
         pages_list = lines[i+1:]
         pages_list = [ list(map(int, pages.split(','))) for pages in pages_list ]
     return (rules, pages_list)
