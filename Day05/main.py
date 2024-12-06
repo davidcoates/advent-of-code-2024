@@ -22,7 +22,7 @@ def read_input() -> tuple[Rules, list[Pages]]:
 def find_violating_rules(rules, pages):
     n = len(pages)
     return ( rule for i in range(n) for j in range(i + 1, n) if (rule := (pages[j], pages[i])) in rules )
-    
+
 def is_correctly_ordered(rules, pages) -> bool:
     return not any(find_violating_rules(rules, pages))
 
@@ -33,14 +33,14 @@ def part1():
         if is_correctly_ordered(rules, pages):
             answer += pages[len(pages)//2]
     print(answer)
-        
+
 def part2():
     (rules, pages_list) = read_input()
     answer = 0
     for pages in pages_list:
         if is_correctly_ordered(rules, pages):
             continue
-        n = len(pages)    
+        n = len(pages)
         while not is_correctly_ordered(rules, pages):
             rule = next(find_violating_rules(rules, pages))
             i, j = pages.index(rule[0]), pages.index(rule[1])

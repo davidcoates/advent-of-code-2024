@@ -34,8 +34,8 @@ def part2():
     def tolerant_is_safe(report: list[int]) -> bool:
         return tolerant_is_safe_increasing(report) or tolerant_is_safe_increasing(report[::-1])
     num_safe_reports = len([report for report in reports if tolerant_is_safe(report)])
-    print(num_safe_reports)    
-    
+    print(num_safe_reports)
+
 if __name__ == '__main__':
     part1()
     part2()

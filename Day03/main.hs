@@ -61,7 +61,7 @@ string = \case
 
 instance (a ~ String) => IsString (Parser a) where
   fromString = string
-  
+
 between :: Int -> Int -> Parser a -> Parser [a]
 between n m p | m >= n && n >= 0 = between' n m where
   between' 0 0 = pure []
@@ -86,7 +86,7 @@ data Statement = Mul (Int, Int) | Do | Dont
 part2 :: IO ()
 part2 = do
   ts <- readFile "input.txt"
-  let statement = (Mul <$> mul) <|> ("do" *> (("()" *> pure Do) <|> ("n't()" *> pure Dont))) 
+  let statement = (Mul <$> mul) <|> ("do" *> (("()" *> pure Do) <|> ("n't()" *> pure Dont)))
   let answer = eval True (findAll statement ts)
   print answer
   where

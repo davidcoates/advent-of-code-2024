@@ -21,7 +21,7 @@ part2 = do
       count _     [] = 0
       count x (y:ys) = (if x == y then 1 else 0) + count x ys
   let totalSimilarity = sum $ map (\x -> x * count x column1) column0
-  print totalSimilarity  
+  print totalSimilarity
 
 main :: IO ()
 main = do

@@ -26,7 +26,7 @@ def part2():
                  answer += int(match.group(1)) * int(match.group(2))
         input = input[match.end():]
     print(answer)
-    
+
 if __name__ == '__main__':
     part1()
     part2()
