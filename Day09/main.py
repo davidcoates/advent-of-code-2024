@@ -6,9 +6,17 @@ class File:
     id: int
     length: int
 
+    def __post_init__(self):
+        assert self.length > 0
+
+
 @dataclass
 class FreeSpace:
     length: int
+
+    def __post_init__(self):
+        assert self.length > 0
+
 
 @dataclass
 class Disk:
@@ -31,9 +39,8 @@ class Disk:
                 assert False
         return checksum
 
-    def move_file(self, file: File, min_chunk_length: int):
+    def move_file_to_leftmost_free_space(self, file: File, min_chunk_length: int):
 
-        assert file.length > 0
         file_index = self.items.index(file)
         finished = False
 
@@ -80,23 +87,26 @@ def read_input() -> Disk:
     i = 0
     while i < len(compressed_disk):
         id = i // 2
-        items.append(File(id, compressed_disk[i]))
+        length = compressed_disk[i]
+        items.append(File(id, length))
         i += 1
         if i < len(compressed_disk):
-            items.append(FreeSpace(compressed_disk[i]))
+            length = compressed_disk[i]
+            if length > 0: # skip 0-length free space
+                items.append(FreeSpace(compressed_disk[i]))
             i += 1
     return Disk(items)
 
 def part1():
     disk = read_input()
     for file in reversed(disk.files()):
-        disk.move_file(file, min_chunk_length=1)
+        disk.move_file_to_leftmost_free_space(file, min_chunk_length=1)
     print(disk.calculate_checksum())
 
 def part2():
     disk = read_input()
     for file in reversed(disk.files()):
-        disk.move_file(file, min_chunk_length=file.length)
+        disk.move_file_to_leftmost_free_space(file, min_chunk_length=file.length)
     print(disk.calculate_checksum())
 
 if __name__ == "__main__":
