@@ -49,16 +49,16 @@ def neighbours_in_grid(point: Point, grid):
             yield (x, y)
 
 def connected_cells(grid, cell) -> set[Point]:
-    seen = set()
-    cells = {cell}
+    seen = {cell}
+    cells = [cell]
     while cells:
         cell0 = cells.pop()
-        seen.add(cell0)
         for cell1 in neighbours_in_grid(cell0, grid):
             (x0, y0) = cell0
             (x1, y1) = cell1
             if grid[x0][y0] == grid[x1][y1] and cell1 not in seen:
-                cells.add(cell1)
+                seen.add(cell1)
+                cells.append(cell1)
     return seen
 
 
