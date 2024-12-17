@@ -120,7 +120,7 @@ def find_quines(program):
 
 def part2():
     _, program = read_input()
-    print(min(find_quines(program)))
+    print(next(find_quines(program)))
 
 if __name__ == "__main__":
     part1()
