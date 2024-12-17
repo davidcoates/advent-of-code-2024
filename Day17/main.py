@@ -13,7 +13,7 @@ def read_input():
     program = list(map(int, lines[i+1].split(" ")[1].split(",")))
     return registers, program
 
-def run_temp(registers, program):
+def run(registers, program):
     ( register_A, register_B, register_C ) = registers
     out = []
     ip = 0
@@ -38,46 +38,25 @@ def run_temp(registers, program):
         jump = False
         match opcode:
             case 0:
-                print('A >>= combo')
                 register_A = register_A >> combo
             case 1:
-                print('B ^ {}'.format(operand))
                 register_B = register_B ^ operand
             case 2:
-                print("B = combo % 8")
                 register_B = combo % 8
             case 3:
                 if register_A != 0:
                     ip = operand
                     jump = True
             case 4:
-                print("B = B ^ C")
                 register_B = register_B ^ register_C
             case 5:
-                print("emit combo")
                 out.append(combo % 8)
             case 6:
-                print("B = A >> combo")
                 register_B = register_A >> combo
             case 7:
-                print("C = A >> combo")
                 register_C = register_A >> combo
         if not jump:
             ip += 2
-    return out
-
-def run(registers, _):
-    ( A, _, _ ) = registers
-    out = []
-    X = A >> ((A % 8) ^ 7)
-    Y = (A % 8) ^ X
-    out.append(Y % 8)
-    A = A >> 3
-    while A != 0:
-        X = A >> ((A % 8) ^ 7)
-        Y = (A % 8) ^ X
-        out.append(Y % 8)
-        A = A >> 3
     return out
 
 def part1():
